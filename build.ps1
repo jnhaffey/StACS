@@ -46,6 +46,8 @@ Param(
     [string]$Configuration = "Release",
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
     [string]$Verbosity = "Verbose",
+	[string]$Bump = "Change",
+	[ValidateSet("Change", "Build", "Revision", "Minor", "Major")]
     [switch]$Experimental,
     [Alias("DryRun","Noop")]
     [switch]$WhatIf,
@@ -87,6 +89,7 @@ if(!$PSScriptRoot){
 }
 
 $TOOLS_DIR = Join-Path $PSScriptRoot "tools"
+$ARTIFACTS_DIR = Join-Path $PSScriptRoot "artifacts"
 $NUGET_EXE = Join-Path $TOOLS_DIR "nuget.exe"
 $CAKE_EXE = Join-Path $TOOLS_DIR "Cake/Cake.exe"
 $NUGET_URL = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
@@ -117,6 +120,12 @@ if($WhatIf.IsPresent) {
 if ((Test-Path $PSScriptRoot) -and !(Test-Path $TOOLS_DIR)) {
     Write-Verbose -Message "Creating tools directory..."
     New-Item -Path $TOOLS_DIR -Type directory | out-null
+}
+
+# Make sure artifacts folder exists
+if ((Test-Path $PSScriptRoot) -and !(Test-Path $ARTIFACTS_DIR)) {
+	Write-Verbose -Message "Creating artifacts directory..."
+    New-Item -Path $ARTIFACTS_DIR -Type directory | out-null
 }
 
 # Make sure that packages.config exist.
@@ -185,5 +194,5 @@ if (!(Test-Path $CAKE_EXE)) {
 
 # Start Cake
 Write-Host "Running build script..."
-Invoke-Expression "& `"$CAKE_EXE`" `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" -verbosity=`"$Verbosity`" $UseMono $UseDryRun $UseExperimental $ScriptArgs"
+Invoke-Expression "& `"$CAKE_EXE`" `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" -bump=`"$Bump`" -verbosity=`"$Verbosity`" $UseMono $UseDryRun $UseExperimental $ScriptArgs"
 exit $LASTEXITCODE

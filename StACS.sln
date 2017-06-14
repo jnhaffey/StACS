@@ -19,8 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B0C51CE0-2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StACS.Core", "src\StACS.Core\StACS.Core.csproj", "{4E72A1B4-E50E-41D3-9B1F-6EE8FD114F63}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StACS.Core.Extensions.XUnitTest", "test\StACS.Core.Extensions.XUnitTest\StACS.Core.Extensions.XUnitTest.csproj", "{D3282CCF-50AF-414B-8BD5-0F736C07DA47}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StACS.NetFx.Extensions", "src\StACS.NetFx.Extensions\StACS.NetFx.Extensions.csproj", "{307C3B88-0F78-4F80-AB68-80B8898FD00D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StACS.NetFx.Functions", "src\StACS.NetFx.Functions\StACS.NetFx.Functions.csproj", "{BCB71989-9A9A-4E0F-900D-2AB4AB488A8A}"
@@ -28,6 +26,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{901177B6-4206-47C1-B589-9997B8B134E4}"
 	ProjectSection(SolutionItems) = preProject
 		tools\packages.config = tools\packages.config
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StACS.Core.Extensions.XUnitTest", "test\StACS.Core.Extensions.XUnitTest\StACS.Core.Extensions.XUnitTest.csproj", "{BCE6F873-B8AF-436F-BE5C-53868F17F8D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{BA3B2861-CD4D-4CD6-8574-8119EB7EB564}"
+	ProjectSection(SolutionItems) = preProject
+		build\parameters.cake = build\parameters.cake
+		build\project.cake = build\project.cake
+		build\version.cake = build\version.cake
 	EndProjectSection
 EndProject
 Global
@@ -40,10 +47,6 @@ Global
 		{4E72A1B4-E50E-41D3-9B1F-6EE8FD114F63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E72A1B4-E50E-41D3-9B1F-6EE8FD114F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E72A1B4-E50E-41D3-9B1F-6EE8FD114F63}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3282CCF-50AF-414B-8BD5-0F736C07DA47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3282CCF-50AF-414B-8BD5-0F736C07DA47}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3282CCF-50AF-414B-8BD5-0F736C07DA47}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3282CCF-50AF-414B-8BD5-0F736C07DA47}.Release|Any CPU.Build.0 = Release|Any CPU
 		{307C3B88-0F78-4F80-AB68-80B8898FD00D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{307C3B88-0F78-4F80-AB68-80B8898FD00D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{307C3B88-0F78-4F80-AB68-80B8898FD00D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,14 +55,18 @@ Global
 		{BCB71989-9A9A-4E0F-900D-2AB4AB488A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCB71989-9A9A-4E0F-900D-2AB4AB488A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCB71989-9A9A-4E0F-900D-2AB4AB488A8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCE6F873-B8AF-436F-BE5C-53868F17F8D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCE6F873-B8AF-436F-BE5C-53868F17F8D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCE6F873-B8AF-436F-BE5C-53868F17F8D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCE6F873-B8AF-436F-BE5C-53868F17F8D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4E72A1B4-E50E-41D3-9B1F-6EE8FD114F63} = {778D4E15-6D78-4425-96D6-130ECAB42D73}
-		{D3282CCF-50AF-414B-8BD5-0F736C07DA47} = {B0C51CE0-2422-4F50-B71D-90A36E635F46}
 		{307C3B88-0F78-4F80-AB68-80B8898FD00D} = {778D4E15-6D78-4425-96D6-130ECAB42D73}
 		{BCB71989-9A9A-4E0F-900D-2AB4AB488A8A} = {778D4E15-6D78-4425-96D6-130ECAB42D73}
+		{BCE6F873-B8AF-436F-BE5C-53868F17F8D4} = {B0C51CE0-2422-4F50-B71D-90A36E635F46}
 	EndGlobalSection
 EndGlobal

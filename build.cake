@@ -1,120 +1,228 @@
-#tool nuget:?package=xunit.runner.console
+// Install Addins.
+#addin "MagicChunks"
 #addin nuget:?package=Cake.Git
+
+// Install Tools.
+
+// Load Other Scripts.
+#load "./build/parameters.cake";
+
 //////////////////////////////////////////////////////////////////////
-// ARGUMENTS
+// PARAMETERS
 //////////////////////////////////////////////////////////////////////
 
-var target = Argument("target", "Default");
-var configuration = Argument("configuration", "Release");
+Parameters parameters = Parameters.GetParameters(Context);
+bool publishingError = false;
 
-//////////////////////////////////////////////////////////////////////
-// PREPARATION
-//////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// SETUP / TEARDOWN
+///////////////////////////////////////////////////////////////////////////////
 
-// Define project names
-var coreProjectName = "StACS.Core";
-var netFxExtensionsProjectName = "StACS.NetFx.Extensions";
-var netFxFunctionsProjectName = "StACS.NetFx.Functions";
+Setup(context =>
+{
+	var solutionChanges = GitDiff(context.Environment.WorkingDirectory.FullPath);
 
-// Define project file names
-var coreFileName = File(coreProjectName.ToString() + ".csproj");
-var netFxExtensionsFileName = File(netFxExtensionsProjectName.ToString() + ".csproj");
-var netFxFunctionsFileName = File(netFxExtensionsProjectName.ToString() + ".csproj");
+	parameters.Initialize(context, solutionChanges);
 
-// Define directories
-var srcDir = Directory("./src");
-var testDir = Directory("./test");
+	Information("Target: {0}", parameters.Target);
+	Information("Configuration: {0}", parameters.Configuration);
+	Information("Build Bump: {0}", parameters.BumpVersion);
+	Information("IsReleaseBuild: {0}", parameters.IsReleaseBuild);
+	Information("SolutionDirectory: {0}", parameters.SolutionDirectory);
 
-var coreProjectDir = Directory(srcDir) + Directory(coreProjectName);
-var coreProjectBuildDir = Directory(coreProjectDir) + Directory("bin") + Directory(configuration);
+	Information("\n\r--Project States--\n\r");
+	
+	foreach(var project in parameters.Projects)
+	{
+		Information("Project: {0}", project.Name);
+		if(project.IsTestProject == false)
+		{
+			Information("Version: {0}", project.Version.GetSemVersion);
+			Information("Is PreRelease: {0}", project.Version.IsPre);
+			Information("Is AlphaRelease: {0}", project.Version.IsAlpha);
+		}		
+		Information("File Name: {0}", project.ProjectFile.GetFilename());
+		Information("Project Path: {0}", project.ProjectPath.FullPath);
+		Information("Build Folder: {0}", project.BuildFolder.FullPath);
 
-var netFxExtensionProjectDir = Directory(srcDir) + Directory(netFxExtensionsProjectName);
-var netFxExtensionBuildDir = Directory(netFxExtensionProjectDir) + Directory("bin") + Directory(configuration);
+		Information("Is Pending New Version: {0}", project.IsPendingNewVersion);
+		Information("Is Pending Reference Updates: {0}", project.IsPendingReferenceUpdate);
+		Information("Is Pending New Build: {0}", project.IsPendingNewBuild);
+		Information("Is Pending New Package: {0}", project.IsPendingNewPackage);
+		Information("Is Test Project: {0}", project.IsTestProject);
+		Information("Build Order: {0}", project.BuildOrder);
+		Information("Reference:");
+		if(project.ProjectReferences != null && project.ProjectReferences.Any())
+		{
+			foreach(var reference in project.ProjectReferences)
+			{
+				Information("\t{0} (v{1})", reference.Name, reference.Version);
+			}
+		}
+		else
+		{
+			Information("\tProject has no Package References");
+		}
+		Information("\n\r");
+	}
+});
 
-var netFxFunctionsProjectDir = Directory(srcDir) + Directory(netFxFunctionsProjectName);
-var netFxFunctionsBuildDir = Directory(netFxFunctionsProjectDir) + Directory("bin") + Directory(configuration);
-
-// Global Variables
-var coreProjectHasChanges = false;
-var netFxExtensionsProjectHasChanges = false;
-var netFxFunctionsProjectHasChanges = false;
+Teardown(context =>
+{
+	Information("Finished running tasks.");
+});
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
 //////////////////////////////////////////////////////////////////////
 
-Task("DisplayAllVariable")
-	.WithCriteria(configuration == "Debug")
-	.Does(() =>
-{
-	Information("srcDir: {0}\r\ntestDir: {1}\r\n", 
-		srcDir, testDir);
-	Information("coreProjectName: {0}\r\ncoreFileName: {1}\r\ncoreProjectDir: {2}\r\ncoreProjectBuildDir: {3}\r\n", 
-		coreProjectName, coreFileName, coreProjectDir, coreProjectBuildDir);
-	Information("netFxExtensionsProjectName: {0}\r\nnetFxExtensionsFileName: {1}\r\nnetFxExtensionProjectDir: {2}\r\nnetFxExtensionBuildDir: {3}\r\n", 
-		netFxExtensionsProjectName, netFxExtensionsFileName, netFxExtensionProjectDir, netFxExtensionBuildDir);
-	Information("netFxFunctionsProjectName: {0}\r\nnetFxFunctionsFileName: {1}\r\nnetFxFunctionsProjectDir: {2}\r\nnetFxFunctionsBuildDir: {3}\r\n", 
-		netFxFunctionsProjectName, netFxFunctionsFileName, netFxFunctionsProjectDir, netFxFunctionsBuildDir);
-});
-
-Task("Clean")
-	.IsDependentOn("DisplayAllVariable")
+Task("Clean-All-Build-Folders")
     .Does(() =>
-{
-    CleanDirectory(coreProjectBuildDir);
-	CleanDirectory(netFxExtensionBuildDir);
-	CleanDirectory(netFxFunctionsBuildDir);
-});
+	{
+		foreach(var project in parameters.Projects)
+		{
+			CleanDirectory(project.BuildFolder.FullPath);
+		}
+		CleanDirectory(parameters.SolutionDirectory.FullPath + "/artifacts");
+	});
 
-Task("Restore-NuGet-Packages")
-    .IsDependentOn("Clean")
-    .Does(() =>
-{
-    NuGetRestore("./StACS.sln");
-});
+Task("Update-Project-Versions")
+	.IsDependentOn("Clean-All-Build-Folders")
+	.Does(() => 
+	{
+		var projectsWithReferences = parameters.Projects.Where(p => p.HasChildReferences());
 
-Task("Check-Project-Git-Status")
-	.IsDependentOn("Restore-NuGet-Packages")
+		while(parameters.Projects.Any(p => p.IsPendingNewVersion))
+		{
+			var project = parameters.Projects.FirstOrDefault(p => p.IsPendingNewVersion);
+			var oldVersion = project.Version.GetSemVersion;
+			project.UpdateProjectVersion(VersionBump.Build);
+			Information("Project: `{0}` \n\r\t Updating Version v{1} => v{2}",
+				project.Name, oldVersion, project.Version.GetSemVersion);
+			Information("\n\r--Reference Projects--");
+
+			//TODO: Fix this
+			foreach(var childProject in projectsWithReferences)
+			{
+				if(childProject.ProjectReferences.Any(pr => pr.Name == project.Name))
+				{
+					childProject.FlagForReferenceUpdates();
+					Information("\t{0}", childProject.Name);
+				}
+				else
+				{
+					Information("\tProject has no Package References");
+					break;
+				}
+			}
+			Information("\n\r");
+		}
+	});
+
+Task("Update-Project-Reference-Versions")
+	.IsDependentOn("Update-Project-Versions")
+	.Does(context => 
+	{
+		while(parameters.Projects.Any(p => p.IsPendingReferenceUpdate))
+		{
+			var project = parameters.Projects.FirstOrDefault(p => p.IsPendingReferenceUpdate);
+			Information("Updating References in {0}", project.Name);
+			project.UpdateProjectReference(context, parameters.Projects);
+			Information("\n\r");
+		}
+	});
+
+Task("Restore-Build-Package-Projects")
+	.IsDependentOn("Update-Project-Reference-Versions")
 	.Does(() =>
-{
-	//coreProjectHasChanges = GitHasUncommitedChanges(coreProjectDir);
-	Information("Looking at: {0}", coreProjectDir);
-	var result = GitDiff(coreProjectDir);
-	Information("GitDiff: {0}", result);
+	{
+		foreach(var project in parameters.Projects.OrderBy(p => p.BuildOrder))
+		{
+			// Restore NuGet Packages for Current Project
+			Information("Starting NuGet Restore for {0}", project.Name);
+			DotNetCoreRestore(project.ProjectFile.FullPath, 
+				new DotNetCoreRestoreSettings
+				{
+					ConfigFile = "./nuget.config"
+				});
+			Information("Finished NuGet Restore for {0}", project.Name);
+
+			// Build Current Project
+			Information("Starting Build for {0}", project.Name);
+			DotNetCoreBuild(project.ProjectFile.FullPath, new DotNetCoreBuildSettings()
+			{
+				Configuration = parameters.Configuration
+			});
+			project.MarkNewBuildComplete();
+			Information("Finished Build for {0}", project.Name);
+
+			// Package Current Project
+			Information("Starting NuGet Packaging for {0}", project.Name);
+			DotNetCorePack(project.ProjectFile.FullPath, 
+				new DotNetCorePackSettings {
+					Configuration = parameters.Configuration,
+					OutputDirectory = parameters.SolutionDirectory + "/artifacts",
+					NoBuild = true
+				});
+			project.MarkNewPackageComplete();
+			Information("Finished NuGet Packaging for {0}", project.Name);
+		}
+	});
+
+Task("Update-Test-Reference-Versions")
+	.IsDependentOn("Restore-Build-Package-Projects")
+	.Does(context =>
+	{
+		foreach(var testProject in parameters.Tests)
+		{
+			Information("Updating References in {0}", testProject.Name);
+			testProject.UpdateProjectReference(context, parameters.Projects);
+			Information("\n\r");
+		}
+	});
+
+Task("Restore-Build-Package-Tests")
+	.IsDependentOn("Update-Test-Reference-Versions")
+	.Does(() =>
+	{
+		foreach(var testProject in parameters.Tests)
+		{
+			Information("Starting NuGet Restore for {0}", testProject.Name);
+			DotNetCoreRestore(testProject.ProjectFile.FullPath, 
+				new DotNetCoreRestoreSettings
+				{
+					ConfigFile = "./nuget.config"
+				});
+			Information("Finished NuGet Restore for {0}", testProject.Name);
+		}
+	});
 	
-});
-
-Task("Build-Core")
-    .IsDependentOn("Check-Project-Git-Status")
-	.WithCriteria(coreProjectHasChanges == true)
-    .Does(() =>
-{
-      // Use MSBuild
-	  var projectFile = Directory(coreProjectDir) + File(coreProjectName + ".csproj");
-      MSBuild(projectFile, settings => settings.SetConfiguration(configuration));
-});
-
-Task("Run-Unit-Tests")
-    .IsDependentOn("Build-Core")
-    .Does(() =>
-{
-    NUnit3(testDir.ToString() + "/**/bin/" + configuration + "**/*.Tests.dll", new NUnit3Settings {
-        NoResults = true
-        });
-});
+Task("Run-Tests")
+	.IsDependentOn("Restore-Build-Package-Tests")
+	.Does(() =>
+	{
+		foreach(var testProject in parameters.Tests)
+		{
+			Information("Starting Tests for {0}", testProject.Name);
+			DotNetCoreTest(testProject.ProjectFile.FullPath,
+				new DotNetCoreTestSettings()
+				{
+					Configuration = parameters.Configuration,
+					NoBuild = true
+				});
+			Information("Finished Tests for {0}", testProject.Name);
+		}
+	});
 
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Run-Unit-Tests");
-
-Task("Test")
-	.IsDependentOn("Check-Project-Git-Status");
+	.IsDependentOn("Run-Tests");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
 //////////////////////////////////////////////////////////////////////
 
-RunTarget(target);
+RunTarget(parameters.Target);
