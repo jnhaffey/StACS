@@ -27,7 +27,7 @@ namespace StACS.Core.Exceptions
         ///     Initializes a new instance of the <see cref="ArgumentNullOrEmptyException" /> class
         /// </summary>
         /// <param name="message">A friendly error message</param>
-        /// <param name="innerException">An exception that was handled by <see cref="SourceEmptyException" /></param>
+        /// <param name="innerException">An exception that was handled by <see cref="ArgumentNullOrEmptyException" /></param>
         public ArgumentNullOrEmptyException(string message, Exception innerException)
             : base(message, innerException)
         {

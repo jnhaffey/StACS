@@ -47,6 +47,14 @@ public class Project
 		return null;
 	}
 
+	public string GetCurrentPackageName
+	{
+		get
+		{
+			return String.Format("{0}.{1}.{2}.{3}.nupkg", this.Name, this.Version.Major, this.Version.Minor, this.Version.Build);
+		}
+	}
+
 	public void CheckForChanges(ICollection<GitDiffFile> getDiffs, Parameters parameters)
 	{
 		if(parameters.BumpVersion == VersionBump.Default && getDiffs.Count() > 0)

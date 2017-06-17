@@ -2,11 +2,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
+    <Version>1.0.33.0</Version>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Version>1.0.1.0</Version>
     <Authors>Jason N Haffey</Authors>
     <Company>StACS</Company>
-    <Description>Common Collection of Extension Methods</Description>
+    <Description>Common System Class Extensions to use across assorted projects</Description>
     <PackageProjectUrl>https://github.com/jnhaffey/StACS.Core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jnhaffey/StACS.Core</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
@@ -14,6 +14,17 @@
     <FileVersion>$(Version)</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="StACS.Core" Version="2.0.1.0" />
+    <Folder Include="DateTime\" />
+    <Folder Include="Exception\" />
+    <Folder Include="Object\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="StACS.Core" Version="2.0.35.0" />
+    <PackageReference Include="System.Globalization" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
+    <PackageReference Include="System.Security.Cryptography.Csp">
+      <Version>4.3.0</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>

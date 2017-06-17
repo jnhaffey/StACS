@@ -1,3 +1,5 @@
+using System.Linq;
+
 // Install Addins.
 #addin "MagicChunks"
 #addin nuget:?package=Cake.Git
@@ -29,6 +31,7 @@ Setup(context =>
 	Information("Build Bump: {0}", parameters.BumpVersion);
 	Information("IsReleaseBuild: {0}", parameters.IsReleaseBuild);
 	Information("SolutionDirectory: {0}", parameters.SolutionDirectory);
+	Information("ArtifactDirectory: {0}", parameters.ArtifactDirectory);
 
 	Information("\n\r--Project States--\n\r");
 	
@@ -83,7 +86,19 @@ Task("Clean-All-Build-Folders")
 		{
 			CleanDirectory(project.BuildFolder.FullPath);
 		}
-		CleanDirectory(parameters.SolutionDirectory.FullPath + "/artifacts");
+
+		var allFiles = GetFiles(parameters.ArtifactDirectory.FullPath + "/*.nupkg");
+		Information("Package Files Found: {0}", allFiles.Count());
+		var filesToKeep = parameters.GetLatestNuGetPackageNames();
+		Information("Package Files To Keep: {0}", filesToKeep.Count());
+		
+		foreach(var file in allFiles)
+		{
+			if(filesToKeep.FirstOrDefault(ftk => ftk.FullPath == file.FullPath) == null)
+			{
+				DeleteFile(file);
+			}			
+		}
 	});
 
 Task("Update-Project-Versions")
@@ -200,7 +215,7 @@ Task("Restore-Build-Package-Tests")
 			{
 				Configuration = parameters.Configuration
 			});
-			project.MarkNewBuildComplete();
+			testProject.MarkNewBuildComplete();
 			Information("Finished Build for {0}", testProject.Name);
 		}
 	});
@@ -228,6 +243,9 @@ Task("Run-Tests")
 
 Task("Default")
 	.IsDependentOn("Run-Tests");
+
+Task("Test")
+	.IsDependentOn("Clean-All-Build-Folders");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

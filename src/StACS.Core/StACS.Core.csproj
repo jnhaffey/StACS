@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
-    <Version>2.0.1.0</Version>
+    <Version>2.0.35.0</Version>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Jason N Haffey</Authors>
     <Company>StACS</Company>
@@ -14,6 +14,7 @@
     <FileVersion>$(Version)</FileVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Factories\" />
     <Folder Include="Interfaces\" />
   </ItemGroup>
 </Project>
