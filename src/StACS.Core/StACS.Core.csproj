@@ -2,13 +2,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
-    <Version>2.0.39.0</Version>
+    <Version>2.0.42.0</Version>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Jason N Haffey</Authors>
     <Company>StACS</Company>
     <Description>Common classes to use across assorted projects</Description>
-    <PackageProjectUrl>https://github.com/jnhaffey/StACS.Core</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/jnhaffey/StACS.Core</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/jnhaffey/StACS</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jnhaffey/StACS</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>

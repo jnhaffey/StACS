@@ -2,11 +2,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
-    <Version>1.0.40.0</Version>
+    <Version>1.0.2.0</Version>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Jason N Haffey</Authors>
     <Company>StACS</Company>
-    <Description>Common System Class Extensions to use across assorted projects</Description>
+    <Description>Common System.Text Class Extensions to use across assorted projects</Description>
     <PackageProjectUrl>https://github.com/jnhaffey/StACS</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jnhaffey/StACS</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
@@ -14,19 +14,9 @@
     <FileVersion>$(Version)</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="DateTime\" />
-    <Folder Include="Exception\" />
-    <Folder Include="Int\" />
-    <Folder Include="Decimal\" />
-    <Folder Include="Object\" />
+    <PackageReference Include="StACS.System.Extensions" Version="1.0.39.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="StACS.Core" Version="2.0.42.0" />
-    <PackageReference Include="System.Globalization" Version="4.3.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <PackageReference Include="System.Security.Cryptography.Csp">
-      <Version>4.3.0</Version>
-    </PackageReference>
+    <Folder Include="StringBuilder\" />
   </ItemGroup>
 </Project>

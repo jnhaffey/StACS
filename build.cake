@@ -154,23 +154,27 @@ Task("Restore-Build-Package-Projects")
 		foreach(var project in parameters.Projects.OrderBy(p => p.BuildOrder))
 		{
 			// Restore NuGet Packages for Current Project
+			Information("\n\r");
 			Information("Starting NuGet Restore for {0}", project.Name);
 			DotNetCoreRestore(project.ProjectFile.FullPath, 
 				new DotNetCoreRestoreSettings
 				{
 					ConfigFile = "./nuget.config"
 				});
+			Information("\n\r");
 			Information("Finished NuGet Restore for {0}", project.Name);
-
+			Information("\n\r");
 			// Build Current Project
 			Information("Starting Build for {0}", project.Name);
+			Information("\n\r");
 			DotNetCoreBuild(project.ProjectFile.FullPath, new DotNetCoreBuildSettings()
 			{
 				Configuration = parameters.Configuration
 			});
 			project.MarkNewBuildComplete();
+			Information("\n\r");
 			Information("Finished Build for {0}", project.Name);
-
+			Information("\n\r");
 			// Package Current Project
 			Information("Starting NuGet Packaging for {0}", project.Name);
 			DotNetCorePack(project.ProjectFile.FullPath, 
@@ -181,6 +185,7 @@ Task("Restore-Build-Package-Projects")
 				});
 			project.MarkNewPackageComplete();
 			Information("Finished NuGet Packaging for {0}", project.Name);
+			Information("\n\r");
 		}
 	});
 
@@ -190,6 +195,7 @@ Task("Update-Test-Reference-Versions")
 	{
 		foreach(var testProject in parameters.Tests)
 		{
+			Information("\n\r");
 			Information("Updating References in {0}", testProject.Name);
 			testProject.UpdateProjectReference(context, parameters.Projects);
 			Information("\n\r");
@@ -202,21 +208,26 @@ Task("Restore-Build-Package-Tests")
 	{
 		foreach(var testProject in parameters.Tests)
 		{
+			Information("\n\r");
 			Information("Starting NuGet Restore for {0}", testProject.Name);
 			DotNetCoreRestore(testProject.ProjectFile.FullPath, 
 				new DotNetCoreRestoreSettings
 				{
 					ConfigFile = "./nuget.config"
 				});
+			Information("\n\r");
 			Information("Finished NuGet Restore for {0}", testProject.Name);
+			Information("\n\r");
 
 			Information("Starting Build for {0}", testProject.Name);
+			Information("\n\r");
 			DotNetCoreBuild(testProject.ProjectFile.FullPath, new DotNetCoreBuildSettings()
 			{
 				Configuration = parameters.Configuration
 			});
 			testProject.MarkNewBuildComplete();
 			Information("Finished Build for {0}", testProject.Name);
+			Information("\n\r");
 		}
 	});
 	
@@ -226,6 +237,7 @@ Task("Run-Tests")
 	{
 		foreach(var testProject in parameters.Tests)
 		{
+			Information("\n\r");
 			Information("Starting Tests for {0}", testProject.Name);
 			DotNetCoreTest(testProject.ProjectFile.FullPath,
 				new DotNetCoreTestSettings()
@@ -234,6 +246,7 @@ Task("Run-Tests")
 					NoBuild = true
 				});
 			Information("Finished Tests for {0}", testProject.Name);
+			Information("\n\r");
 		}
 	});
 

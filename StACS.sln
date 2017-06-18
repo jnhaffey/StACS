@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StACS.System.Extensions", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StACS.System.Extensions.UnitTests", "test\StACS.System.Extensions.UnitTests\StACS.System.Extensions.UnitTests.csproj", "{B253726E-273B-4446-828D-4DF10F7F505B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StACS.System.Text.Extensions", "src\StACS.System.Text.Extensions\StACS.System.Text.Extensions.csproj", "{36727E5C-12E8-4B0D-8B5A-9D72C39A916A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StACS.System.Text.Extensions.UnitTests", "test\StACS.System.Text.Extensions.UnitTests\StACS.System.Text.Extensions.UnitTests.csproj", "{48859152-CA48-4E61-9023-8DAE6CD8F272}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +57,14 @@ Global
 		{B253726E-273B-4446-828D-4DF10F7F505B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B253726E-273B-4446-828D-4DF10F7F505B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B253726E-273B-4446-828D-4DF10F7F505B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36727E5C-12E8-4B0D-8B5A-9D72C39A916A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36727E5C-12E8-4B0D-8B5A-9D72C39A916A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36727E5C-12E8-4B0D-8B5A-9D72C39A916A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36727E5C-12E8-4B0D-8B5A-9D72C39A916A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48859152-CA48-4E61-9023-8DAE6CD8F272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48859152-CA48-4E61-9023-8DAE6CD8F272}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48859152-CA48-4E61-9023-8DAE6CD8F272}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48859152-CA48-4E61-9023-8DAE6CD8F272}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,5 +73,7 @@ Global
 		{4E72A1B4-E50E-41D3-9B1F-6EE8FD114F63} = {778D4E15-6D78-4425-96D6-130ECAB42D73}
 		{5E0AAC0D-F767-45F3-A6E2-86CE0A0FA6DA} = {778D4E15-6D78-4425-96D6-130ECAB42D73}
 		{B253726E-273B-4446-828D-4DF10F7F505B} = {B0C51CE0-2422-4F50-B71D-90A36E635F46}
+		{36727E5C-12E8-4B0D-8B5A-9D72C39A916A} = {778D4E15-6D78-4425-96D6-130ECAB42D73}
+		{48859152-CA48-4E61-9023-8DAE6CD8F272} = {B0C51CE0-2422-4F50-B71D-90A36E635F46}
 	EndGlobalSection
 EndGlobal
