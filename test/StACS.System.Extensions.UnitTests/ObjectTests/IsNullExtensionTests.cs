@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StACS.System.Extensions.Object;
+using StACS.System.ObjectExtensions;
 
 namespace StACS.System.Extensions.UnitTests.ObjectTests
 {

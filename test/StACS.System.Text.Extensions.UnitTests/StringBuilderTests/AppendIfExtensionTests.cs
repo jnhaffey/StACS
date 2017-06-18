@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StACS.Core.Exceptions;
+using System.Text;
 
 namespace StACS.System.Text.Extensions.UnitTests.StringBuilderTests
 {

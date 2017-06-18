@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using StACS.Core.Exceptions;
 
-namespace StACS.System.Extensions.String
+namespace StACS.System.StringExtensions
 {
     public static class EncryptionDecryptionExtensions
     {

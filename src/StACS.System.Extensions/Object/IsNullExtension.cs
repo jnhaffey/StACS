@@ -1,4 +1,4 @@
-﻿namespace StACS.System.Extensions.Object
+﻿namespace StACS.System.ObjectExtensions
 {
     public static class IsNullExtension
     {

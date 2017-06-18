@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StACS.Core.Exceptions;
-using StACS.System.Extensions.String;
+using StACS.System.StringExtensions;
 
 namespace StACS.System.Extensions.UnitTests.StringTests
 {

@@ -1,5 +1,5 @@
 ﻿using StACS.Core.Exceptions;
-using StACS.System.Extensions.Object;
+using StACS.System.ObjectExtensions;
 
 namespace System
 {

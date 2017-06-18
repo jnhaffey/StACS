@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StACS.Core.Exceptions;
-using StACS.System.Extensions.String;
+using StACS.System.StringExtensions;
 using System;
 
 namespace StACS.System.Extensions.UnitTests.StringTests

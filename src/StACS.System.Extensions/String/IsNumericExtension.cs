@@ -2,7 +2,7 @@
 using System;
 using System.Globalization;
 
-namespace StACS.System.Extensions.String
+namespace StACS.System.StringExtensions
 {
     public static class IsNumericExtension
     {

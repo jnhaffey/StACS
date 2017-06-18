@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StACS.System.Extensions.String;
+using StACS.System.StringExtensions;
 using System;
 using StACS.Core.Exceptions;
 
