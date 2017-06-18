@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
-    <Version>1.0.40.0</Version>
+    <Version>1.0.41.0</Version>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Jason N Haffey</Authors>
     <Company>StACS</Company>
@@ -21,7 +21,7 @@
     <Folder Include="Object\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="StACS.Core" Version="2.0.42.0" />
+    <PackageReference Include="StACS.Core" Version="2.0.43.0" />
     <PackageReference Include="System.Globalization" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
