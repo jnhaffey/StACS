@@ -8,13 +8,11 @@ namespace StACS.System.Extensions.UnitTests.StringTests
     [TestClass]
     public class IsGuidExtensionTests
     {
-        private Guid _guidToTest = Guid.NewGuid();
-
         [TestMethod]
         public void IsGuid_GuidFormatN_True()
         {
             // Arrange
-            string guidString = _guidToTest.ToString("N");
+            string guidString = ConstantStringTestData.GuidFormatN;
 
             // Act
             bool actualResult = guidString.IsGuid();
@@ -27,7 +25,7 @@ namespace StACS.System.Extensions.UnitTests.StringTests
         public void IsGuid_GuidFormatD_True()
         {
             // Arrange
-            string guidString = _guidToTest.ToString("D");
+            string guidString = ConstantStringTestData.GuidFormatD;
 
             // Act
             bool actualResult = guidString.IsGuid();
@@ -40,7 +38,7 @@ namespace StACS.System.Extensions.UnitTests.StringTests
         public void IsGuid_GuidFormatB_True()
         {
             // Arrange
-            string guidString = _guidToTest.ToString("B");
+            string guidString = ConstantStringTestData.GuidFormatB;
 
             // Act
             bool actualResult = guidString.IsGuid();
@@ -53,7 +51,7 @@ namespace StACS.System.Extensions.UnitTests.StringTests
         public void IsGuid_GuidFormatP_True()
         {
             // Arrange
-            string guidString = _guidToTest.ToString("P");
+            string guidString = ConstantStringTestData.GuidFormatP;
 
             // Act
             bool actualResult = guidString.IsGuid();
@@ -63,23 +61,10 @@ namespace StACS.System.Extensions.UnitTests.StringTests
         }
 
         [TestMethod]
-        public void IsGuid_DoubleLengthGuid_False()
+        public void IsGuid_AlphanumericStirng_False()
         {
             // Arrange
-            string guidString = Guid.NewGuid().ToString("D") + Guid.NewGuid().ToString("D");
-
-            // Act
-            var actualResult = guidString.IsGuid();
-
-            // Assert
-            Assert.IsFalse(actualResult);
-        }
-
-        [TestMethod]
-        public void IsGuid_ShortGuid_False()
-        {
-            // Arrange
-            string guidString = Guid.NewGuid().ToString("D").Substring(0,5);
+            string guidString = ConstantStringTestData.AlphanumericStirng;
 
             // Act
             var actualResult = guidString.IsGuid();
@@ -90,10 +75,24 @@ namespace StACS.System.Extensions.UnitTests.StringTests
 
         [TestMethod]
         [ExpectedException(typeof(SourceEmptyOrNullException))]
-        public void IsGuid_NullGuid_Exception()
+        public void IsGuid_NullString_Exception()
         {
             // Arrange
-            string guidString = null;
+            string guidString = ConstantStringTestData.NullString;
+
+            // Act
+            bool actualResult = guidString.IsGuid();
+
+            // Assert
+            Assert.Fail($"Exception should have been thrown.  Actual Result: {actualResult}");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(SourceEmptyOrNullException))]
+        public void IsGuid_EmptyString_Exception()
+        {
+            // Arrange
+            string guidString = ConstantStringTestData.EmptyString;
 
             // Act
             bool actualResult = guidString.IsGuid();

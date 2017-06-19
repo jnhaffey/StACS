@@ -10,98 +10,98 @@ namespace StACS.System.Extensions.UnitTests.StringTests
         public void ContainsCultureInvariant_EmptyString_EmptyString_IgnoreCase_False()
         {
             // Arrange
-            string test = string.Empty;
-            string compareWith = string.Empty;
+            string emptyString = ConstantStringTestData.EmptyString;
+            string compareWith = ConstantStringTestData.EmptyString;
 
             // Act
-            bool actualResult = test.ContainsCultureInvariant(compareWith);
+            bool actualResult = emptyString.ContainsCultureInvariant(compareWith);
 
             // Assert
-            Assert.IsFalse(actualResult, $"Result => test: {test} | compareWith: {compareWith}");
+            Assert.IsFalse(actualResult, $"Result => test: {emptyString} | compareWith: {compareWith}");
         }
 
         [TestMethod]
         public void ContainsCultureInvariant_EmptyString_NonEmptyString_IgnoreCase_False()
         {
             // Arrange
-            string test = string.Empty;
+            string emptyString = ConstantStringTestData.EmptyString;
             string compareWith = "NonEmptyString";
 
             // Act
-            bool actualResult = test.ContainsCultureInvariant(compareWith);
+            bool actualResult = emptyString.ContainsCultureInvariant(compareWith);
 
             // Assert
-            Assert.IsFalse(actualResult, $"Result => test: {test} | compareWith: {compareWith}");
+            Assert.IsFalse(actualResult, $"Result => test: {emptyString} | compareWith: {compareWith}");
         }
 
         [TestMethod]
-        public void ContainsCultureInvariant_NonEmptyString_EmptyString_IgnoreCase_False()
+        public void ContainsCultureInvariant_AlphanumericspecialString_EmptyString_IgnoreCase_False()
         {
             // Arrange
-            string test = "NonEmptyString";
-            string compareWith = string.Empty;
+            string stringToTest = ConstantStringTestData.AlphanumericspecialString;
+            string compareWith = ConstantStringTestData.EmptyString;
 
             // Act
-            bool actualResult = test.ContainsCultureInvariant(compareWith);
+            bool actualResult = stringToTest.ContainsCultureInvariant(compareWith);
 
             // Assert
-            Assert.IsFalse(actualResult, $"Result => test: {test} | compareWith: {compareWith}");
+            Assert.IsFalse(actualResult, $"Result => test: {stringToTest} | compareWith: {compareWith}");
         }
 
         [TestMethod]
-        public void ContainsCultureInvariant_NonEmptyString_NonEmptyString_IgnoreCase_True()
+        public void ContainsCultureInvariant_AlphanumericspecialString_AlphanumericspecialString_IgnoreCase_True()
         {
             // Arrange
-            string test = "NonEmptyString";
-            string compareWith = "NonEmptyString";
+            string stringToTest = ConstantStringTestData.AlphanumericspecialString;
+            string compareWith = ConstantStringTestData.AlphanumericspecialString;
 
             // Act
-            bool actualResult = test.ContainsCultureInvariant(compareWith);
+            bool actualResult = stringToTest.ContainsCultureInvariant(compareWith);
 
             // Assert
-            Assert.IsTrue(actualResult, $"Result => test: {test} | compareWith: {compareWith}");
+            Assert.IsTrue(actualResult, $"Result => test: {stringToTest} | compareWith: {compareWith}");
         }
 
         [TestMethod]
-        public void ContainsCultureInvariant_NonEmptyString_NonEmptyString_DoNotIgnoreCase_True()
+        public void ContainsCultureInvariant_AlphanumericspecialString_AlphanumericspecialString_DoNotIgnoreCase_True()
         {
             // Arrange
-            string test = "NonEmptyString";
-            string compareWith = "NonEmptyString";
+            string stringToTest = ConstantStringTestData.AlphanumericspecialString;
+            string compareWith = ConstantStringTestData.AlphanumericspecialString;
 
             // Act
-            bool actualResult = test.ContainsCultureInvariant(compareWith, false);
+            bool actualResult = stringToTest.ContainsCultureInvariant(compareWith, false);
 
             // Assert
-            Assert.IsTrue(actualResult, $"Result => test: {test} | compareWith: {compareWith}");
+            Assert.IsTrue(actualResult, $"Result => test: {stringToTest} | compareWith: {compareWith}");
         }
 
         [TestMethod]
-        public void ContainsCultureInvariant_NonEmptyStringLowered_NonEmptyString_DoNotIgnoreCase_False()
+        public void ContainsCultureInvariant_AlphanumericspecialStringLowered_AlphanumericspecialString_DoNotIgnoreCase_False()
         {
             // Arrange
-            string test = "NonEmptyString".ToLower();
-            string compareWith = "NonEmptyString";
+            string stringToTest = ConstantStringTestData.AlphanumericspecialString.ToLower();
+            string compareWith = ConstantStringTestData.AlphanumericspecialString;
 
             // Act
-            bool actualResult = test.ContainsCultureInvariant(compareWith, false);
+            bool actualResult = stringToTest.ContainsCultureInvariant(compareWith, false);
 
             // Assert
-            Assert.IsFalse(actualResult, $"Result => test: {test} | compareWith: {compareWith}");
+            Assert.IsFalse(actualResult, $"Result => test: {stringToTest} | compareWith: {compareWith}");
         }
 
         [TestMethod]
-        public void ContainsCultureInvariant_NonEmptyString_NonEmptyStringLowered_DoNotIgnoreCase_False()
+        public void ContainsCultureInvariant_AlphanumericspecialString_AlphanumericspecialStringLowered_DoNotIgnoreCase_False()
         {
             // Arrange
-            string test = "NonEmptyString";
-            string compareWith = "NonEmptyString".ToLower();
+            string stringToTest = ConstantStringTestData.AlphanumericspecialString;
+            string compareWith = ConstantStringTestData.AlphanumericspecialString.ToLower();
 
             // Act
-            bool actualResult = test.ContainsCultureInvariant(compareWith, false);
+            bool actualResult = stringToTest.ContainsCultureInvariant(compareWith, false);
 
             // Assert
-            Assert.IsFalse(actualResult, $"Result => test: {test} | compareWith: {compareWith}");
+            Assert.IsFalse(actualResult, $"Result => test: {stringToTest} | compareWith: {compareWith}");
         }
     }
 }

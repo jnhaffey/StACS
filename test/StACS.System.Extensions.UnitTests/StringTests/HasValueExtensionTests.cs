@@ -7,42 +7,42 @@ namespace StACS.System.Extensions.UnitTests.StringTests
     public class HasValueExtensionTests
     {
         [TestMethod]
-        public void HasValue_EmptyString_False()
-        {
-            // Arrange
-            string test = string.Empty;
-
-            // Act
-            bool actualResult = test.HasValue();
-
-            // Assert
-            Assert.IsFalse(actualResult);
-        }
-
-        [TestMethod]
-        public void HasValue_StringWithValue_True()
-        {
-            // Arrange
-            string test = "Test String";
-
-            // Act
-            bool actualResult = test.HasValue();
-
-            // Assert
-            Assert.IsTrue(actualResult);
-        }
-
-        [TestMethod]
         public void HasValue_NullString_False()
         {
             // Arrange
-            string test = null;
+            string stringToTest = ConstantStringTestData.NullString;
 
             // Act
-            bool actualResult = test.HasValue();
+            bool actualResult = stringToTest.HasValue();
 
             // Assert
             Assert.IsFalse(actualResult);
+        }
+
+        [TestMethod]
+        public void HasValue_EmptyString_False()
+        {
+            // Arrange
+            string stringToTest = ConstantStringTestData.EmptyString;
+
+            // Act
+            bool actualResult = stringToTest.HasValue();
+
+            // Assert
+            Assert.IsFalse(actualResult);
+        }
+
+        [TestMethod]
+        public void HasValue_AlphanumericspecialString_True()
+        {
+            // Arrange
+            string stringToTest = ConstantStringTestData.AlphanumericspecialString;
+
+            // Act
+            bool actualResult = stringToTest.HasValue();
+
+            // Assert
+            Assert.IsTrue(actualResult);
         }
     }
 }

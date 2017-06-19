@@ -10,26 +10,40 @@ namespace StACS.System.Extensions.UnitTests.StringTests
     {
         private string _decryptedVersion;
         private string _encryptedVersion;
-        private readonly string ValidKey = "e#+?x$hgn._8R7<-";
+        
 
         [TestInitialize]
         public void TestSetup()
         {
             _decryptedVersion = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo";
-            _encryptedVersion = _decryptedVersion.Encrypt(ValidKey);
+            _encryptedVersion = _decryptedVersion.Encrypt(ConstantStringTestData.ValidKey);
         }
 
         #region Encrypt Method
 
         [TestMethod]
         [ExpectedException(typeof(SourceEmptyOrNullException))]
+        public void Encrypt_NullString_ValidKey_Exception()
+        {
+            // Arrange
+            string nullString = ConstantStringTestData.NullString;
+
+            // Act
+            string actualResult = nullString.Encrypt(ConstantStringTestData.ValidKey);
+
+            // Assert
+            Assert.Fail($"Exception should have been thrown.  Actual Result: {actualResult}");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(SourceEmptyOrNullException))]
         public void Encrypt_EmptyString_ValidKey_Exception()
         {
             // Arrange
-            string emptyString = string.Empty;
+            string emptyString = ConstantStringTestData.EmptyString;
 
             // Act
-            string actualResult = emptyString.Encrypt(ValidKey);
+            string actualResult = emptyString.Encrypt(ConstantStringTestData.ValidKey);
 
             // Assert
             Assert.Fail($"Exception should have been thrown.  Actual Result: {actualResult}");
@@ -40,7 +54,7 @@ namespace StACS.System.Extensions.UnitTests.StringTests
         public void Encrypt_ValidString_EmptyKey_Exception()
         {
             // Arrange
-            string emptyKey = string.Empty;
+            string emptyKey = ConstantStringTestData.EmptyString;
 
             // Act
             string actualResult = _decryptedVersion.Encrypt(emptyKey);
@@ -59,7 +73,7 @@ namespace StACS.System.Extensions.UnitTests.StringTests
             // Setup as class fields in test class
 
             // Act
-            string actualResult = _decryptedVersion.Encrypt(ValidKey);
+            string actualResult = _decryptedVersion.Encrypt(ConstantStringTestData.ValidKey);
 
             // Assert
             Assert.AreEqual(_encryptedVersion.Length, actualResult.Length);
@@ -71,13 +85,27 @@ namespace StACS.System.Extensions.UnitTests.StringTests
 
         [TestMethod]
         [ExpectedException(typeof(SourceEmptyOrNullException))]
+        public void Decrypt_NullString_ValidKey_Exception()
+        {
+            // Arrange
+            string nullString = ConstantStringTestData.NullString;
+
+            // Act
+            string actualResult = nullString.Decrypt(ConstantStringTestData.ValidKey);
+
+            // Assert
+            Assert.Fail($"Exception should have been thrown.  Actual Result: {actualResult}");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(SourceEmptyOrNullException))]
         public void Decrypt_EmptyString_ValidKey_Exception()
         {
             // Arrange
-            string emptyString = string.Empty;
+            string emptyString = ConstantStringTestData.EmptyString;
 
             // Act
-            string actualResult = emptyString.Decrypt(ValidKey);
+            string actualResult = emptyString.Decrypt(ConstantStringTestData.ValidKey);
 
             // Assert
             Assert.Fail($"Exception should have been thrown.  Actual Result: {actualResult}");
@@ -88,7 +116,7 @@ namespace StACS.System.Extensions.UnitTests.StringTests
         public void Decrypt_ValidString_EmptyKey_Exception()
         {
             // Arrange
-            string emptyKey = string.Empty;
+            string emptyKey = ConstantStringTestData.EmptyString;
 
             // Act
             string actualResult = _decryptedVersion.Decrypt(emptyKey);
@@ -104,7 +132,7 @@ namespace StACS.System.Extensions.UnitTests.StringTests
             // Setup as class fields in test class
 
             // Act
-            string actualResult = _encryptedVersion.Decrypt(ValidKey);
+            string actualResult = _encryptedVersion.Decrypt(ConstantStringTestData.ValidKey);
 
             // Assert
             Assert.AreEqual(_decryptedVersion, actualResult);
